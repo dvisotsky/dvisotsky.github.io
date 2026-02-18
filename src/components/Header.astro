@@ -1,0 +1,80 @@
+---
+import { SITE_TITLE } from "../consts";
+import HeaderLink from "./HeaderLink.astro";
+import ThemeToggle from "./ThemeToggle.vue";
+---
+
+<header>
+  <nav>
+    <h2><a href="/">{SITE_TITLE}</a></h2>
+    <div class="nav-right">
+      <div class="internal-links">
+        <HeaderLink href="/">Home</HeaderLink>
+        <HeaderLink href="/blog">Blog</HeaderLink>
+        <HeaderLink href="/about">About</HeaderLink>
+      </div>
+
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>
+<style>
+  header {
+    margin: 0;
+    padding: 0 1em;
+    box-shadow: 0 2px 8px rgba(var(--black), 5%);
+  }
+  h2 {
+    margin: 0;
+    font-size: 1em;
+  }
+
+  h2 a,
+  h2 a.active {
+    text-decoration: none;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  nav a {
+    padding: 0.5em;
+    color: var(--fg);
+    border-bottom: 4px solid transparent;
+    text-decoration: none;
+    transition: 0.2s;
+  }
+  button {
+    background: transparent;
+    border: 1px solid rgb(var(--gray));
+    color: var(--fg);
+    border-radius: 6px;
+    padding: 0.35em 0.55em;
+    cursor: pointer;
+    line-height: 1;
+  }
+  button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  nav a:hover {
+    border-bottom-color: var(--accent);
+  }
+
+  nav a.active {
+    text-decoration: none;
+    border-bottom-color: var(--accent);
+  }
+
+  @media (max-width: 720px) {
+    .nav-right {
+      gap: 0.25rem;
+    }
+  }
+</style>
