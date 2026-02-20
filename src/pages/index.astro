@@ -4,6 +4,11 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { Icon } from "astro-icon/components";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
 
 <!doctype html>
@@ -35,66 +40,129 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
       #hello-reset:hover {
         transform: rotate(-30deg);
       }
+      .hero {
+        position: relative;
+        width: 100%;
+        min-height: min(50vw, 20rem);
+        display: flex;
+        align-items: flex-start;
+        overflow: hidden;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(var(--black), 0.22),
+          rgba(var(--black), 0.38)
+        );
+        z-index: 1;
+        pointer-events: none;
+      }
+      .hero-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 100%;
+        z-index: 0;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 1.5rem 1rem;
+      }
+      .posts {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .post {
+        /* background-color: var(--bg2); */
+        padding: 0 1rem;
+        border-left: 2px solid var(--yellow);
+      }
+      .post-info {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+      }
+      .post time {
+        color: var(--fg2);
+        font-style: italic;
+        font-size: 0.8em;
+      }
+      .post-title {
+        text-decoration: underline;
+      }
+      .post-desc {
+        color: var(--fg2);
+        font-size: 0.9em;
+        margin-bottom: 0.5rem;
+      }
+      .post-dot:not(:last-child) {
+        width: 6px;
+        height: 6px;
+        border: 2px solid var(--yellow);
+        /* border-radius: 50%; */
+        transform: rotate(45deg);
+        margin: -0.5rem 0 0 -1rem;
+        position: relative;
+        top: 4px;
+        left: calc(1rem - 4px);
+      }
     </style></head
   >
   <body>
     <Header />
     <main>
-      <div style="display: flex; flex-wrap: wrap;">
-        <h1>Hello,&nbsp;</h1>
-        <input style="width: 23rem" id="hello-input" aria-label="Greeting" />
-        <button id="hello-reset" type="button" hidden>
-          <Icon name="reset" width="24" height="24" />
-        </button>
+      <div class="hero">
+        <img class="hero-image" src="/assets/calgary-boardwalk.jpg" alt="" />
+        <div class="hero-content">
+          <h1>Hello,&nbsp;</h1>
+          <input style="width: 23rem" id="hello-input" aria-label="Greeting" />
+          <button id="hello-reset" type="button" hidden>
+            <Icon name="reset" width="24" height="24" />
+          </button>
+        </div>
       </div>
       <p>
-        Welcome to the official <a href="https://astro.build/">Astro</a> blog starter
-        template. This template serves as a lightweight, minimally-styled starting
-        point for anyone looking to build a personal website, blog, or portfolio with
-        Astro.
+        The entire internet at your disposal, and yet, you are here. Thanks for
+        stopping by, I hope your time here is pleasant.
       </p>
-      <p>
-        This template comes with a few integrations already configured in your
-        <code>astro.config.mjs</code> file. You can customize your setup with
-        <a href="https://astro.build/integrations">Astro Integrations</a> to add tools
-        like Tailwind, React, or Vue to your project.
-      </p>
-      <p>Here are a few ideas on how to get started with the template:</p>
-      <ul>
-        <li>Edit this page in <code>src/pages/index.astro</code></li>
-        <li>
-          Edit the site header items in <code>src/components/Header.astro</code>
-        </li>
-        <li>
-          Add your name to the footer in <code>src/components/Footer.astro</code
-          >
-        </li>
-        <li>
-          Check out the included blog posts in <code>src/content/blog/</code>
-        </li>
-        <li>
-          Customize the blog post page layout in <code
-            >src/layouts/BlogPost.astro</code
-          >
-        </li>
-      </ul>
-      <p>
-        Have fun! If you get stuck, remember to
-        <a href="https://docs.astro.build/">read the docs</a>
-        or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-      </p>
-      <p>
-        Looking for a blog template with a bit more personality? Check out
-        <a href="https://github.com/Charca/astro-blog-template"
-          >astro-blog-template</a
-        >
-        by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-      </p>
+
+      <h3>Latest Posts</h3>
+      <div class="posts">
+        {
+          posts.map((post) => (
+            <div class="post">
+              <a href={`/blog/${post.id}/`}>
+                <div class="post-title">{post.data.title}</div>
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString("en-us", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </time>
+                <div class="post-desc">{post.data.description}</div>
+              </a>
+            </div>
+            <div class="post-dot"></div>
+          ))
+        }
+      </div>
+
+      <h3>About Me</h3>
     </main>
     <Footer />
   </body><script>
     const hellos = [
-      "Astronaut",
       "Traveller",
       "Wanderer",
       "Friend",
@@ -108,35 +176,71 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
     const helloReset = document.getElementById(
       "hello-reset",
     ) as HTMLButtonElement;
-    const storageKey = "hello-heading-custom-text";
-    const savedHello = localStorage.getItem(storageKey);
+    const customHelloStorageKey = "hello-heading-custom-text";
+    const randomHelloStorageKey = "hello-heading-random-text";
+    const savedHello = sessionStorage.getItem(customHelloStorageKey);
     const hasCustomHello =
       typeof savedHello === "string" && savedHello.trim().length > 0;
 
-    helloInput.value = hasCustomHello ? savedHello : randomHello();
+    const savedSessionHello = sessionStorage.getItem(randomHelloStorageKey);
+    const sessionHello =
+      typeof savedSessionHello === "string" &&
+      savedSessionHello.trim().length > 0
+        ? savedSessionHello
+        : randomHello();
+
+    if (!savedSessionHello || savedSessionHello.trim().length === 0) {
+      sessionStorage.setItem(randomHelloStorageKey, sessionHello);
+    }
+
+    helloInput.value = hasCustomHello ? savedHello : sessionHello;
     helloReset.hidden = !hasCustomHello;
 
-    console.log("hasCustomHello", hasCustomHello, savedHello);
     if (hasCustomHello) {
       const customHello = helloInput.value.trim();
-      localStorage.setItem(storageKey, customHello);
+      sessionStorage.setItem(customHelloStorageKey, customHello);
       helloReset.hidden = false;
     }
 
     helloInput.addEventListener("input", () => {
       const customHello = helloInput.value.trim();
       if (customHello.length > 0) {
-        localStorage.setItem(storageKey, customHello);
+        sessionStorage.setItem(customHelloStorageKey, customHello);
+        helloReset.hidden = false;
         return;
       }
 
-      localStorage.removeItem(storageKey);
+      sessionStorage.removeItem(customHelloStorageKey);
+      helloReset.hidden = true;
     });
 
     helloReset.addEventListener("click", () => {
-      localStorage.removeItem(storageKey);
-      helloInput.value = randomHello();
+      sessionStorage.removeItem(customHelloStorageKey);
+      const nextHello =
+        sessionStorage.getItem(randomHelloStorageKey) ?? randomHello();
+      sessionStorage.setItem(randomHelloStorageKey, nextHello);
+      helloInput.value = nextHello;
       helloReset.hidden = true;
     });
+
+    const heroImageSources = [
+      "/assets/calgary-boardwalk.jpg",
+      "/assets/calgary-sky.jpg",
+      "/assets/northern-river.jpg",
+    ];
+    const heroImageStorageKey = "home-hero-image-src";
+    const heroImage = document.querySelector(
+      ".hero-image",
+    ) as HTMLImageElement | null;
+
+    const savedHeroImage = sessionStorage.getItem(heroImageStorageKey);
+    const sessionHeroImage =
+      savedHeroImage && heroImageSources.includes(savedHeroImage)
+        ? savedHeroImage
+        : heroImageSources[Math.floor(Math.random() * heroImageSources.length)];
+
+    sessionStorage.setItem(heroImageStorageKey, sessionHeroImage);
+
+    heroImage?.setAttribute("src", sessionHeroImage);
   </script>
 </html>
