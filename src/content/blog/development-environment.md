@@ -1,6 +1,7 @@
 ---
 title: "Development Environment"
 description: "My toolkit for productive software development"
+heroImage: "../../assets/development-environment.jpg"
 pubDate: "Jul 08 2025"
 tags: ["tech"]
 ---
