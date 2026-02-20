@@ -5,6 +5,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
+import { Icon } from "astro-icon/components";
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -37,10 +38,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         color: rgb(var(--gray-dark));
       }
       .title {
-        margin-bottom: 1em;
-        padding: 1em 0;
-        text-align: center;
         line-height: 1;
+        text-align: center;
       }
       .title h1 {
         margin: 0 0 0.5em 0;
@@ -48,9 +47,36 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       .date {
         margin-bottom: 0.5em;
         color: rgb(var(--gray));
+        text-align: right;
       }
       .last-updated-on {
         font-style: italic;
+      }
+      #scroll-to-top {
+        position: fixed;
+        right: -8px;
+        bottom: 1rem;
+        z-index: 20;
+        border: 1px solid rgb(var(--gray));
+        background-color: var(--bg);
+        color: var(--accent);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: "Courier Prime", "Courier New", Courier, monospace;
+        font-size: 0.9rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.2s;
+      }
+      #scroll-to-top:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      #scroll-to-top.open {
+        right: 1rem;
+        opacity: 1;
+        pointer-events: auto;
       }
     </style>
   </head>
@@ -67,18 +93,16 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
           }
         </div>
         <div class="prose">
-          <div class="title">
-            <div class="date">
-              <FormattedDate date={pubDate} />
-              {
-                updatedDate && (
-                  <div class="last-updated-on">
-                    Last updated on <FormattedDate date={updatedDate} />
-                  </div>
-                )
-              }
-            </div>
-            <h1>{title}</h1>
+          <h1 class="title">{title}</h1>
+          <div class="date">
+            <FormattedDate date={pubDate} />
+            {
+              updatedDate && (
+                <div class="last-updated-on">
+                  Last updated on <FormattedDate date={updatedDate} />
+                </div>
+              )
+            }
             <hr />
           </div>
           <slot />
@@ -86,5 +110,67 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       </article>
     </main>
     <Footer />
-  </body>
+    <button id="scroll-to-top" type="button" aria-label="Scroll to top">
+      <Icon name="double-chevron-up" width="24" height="24" />
+    </button>
+  </body><script>
+    const scrollToTopButton = document.getElementById("scroll-to-top");
+
+    if (scrollToTopButton) {
+      let scrollThreshold = 0;
+      let isTicking = false;
+
+      const recomputeScrollThreshold = () => {
+        const scrollableHeight = Math.max(
+          0,
+          document.documentElement.scrollHeight - window.innerHeight,
+        );
+        scrollThreshold = scrollableHeight * 0.25;
+      };
+
+      const updateScrollToTopButton = () => {
+        const shouldShow =
+          scrollThreshold > 0 && window.scrollY >= scrollThreshold;
+        scrollToTopButton.classList.toggle("open", shouldShow);
+      };
+
+      const onScroll = () => {
+        if (isTicking) return;
+
+        isTicking = true;
+        window.requestAnimationFrame(() => {
+          isTicking = false;
+          updateScrollToTopButton();
+        });
+      };
+
+      const onResize = () => {
+        recomputeScrollThreshold();
+        updateScrollToTopButton();
+      };
+
+      const onClick = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      onResize();
+      window.addEventListener("scroll", onScroll, {
+        passive: true,
+      });
+      window.addEventListener("resize", onResize, { passive: true });
+      window.addEventListener("load", onResize, { once: true });
+
+      scrollToTopButton.addEventListener("click", onClick);
+
+      window.addEventListener(
+        "pagehide",
+        () => {
+          window.removeEventListener("scroll", onScroll);
+          window.removeEventListener("resize", onResize);
+          scrollToTopButton.removeEventListener("click", onClick);
+        },
+        { once: true },
+      );
+    }
+  </script>
 </html>

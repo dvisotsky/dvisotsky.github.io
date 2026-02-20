@@ -21,11 +21,17 @@ const posts = (await getCollection("blog"))
         background: transparent;
 
         font-family: "Courier Prime", "Courier New", Courier, monospace;
-        font-size: 3em;
+        font-size: 2.5em;
         font-weight: bold;
         margin: 0 0 0.5rem 0;
         color: var(--yellow);
         line-height: 1.2;
+      }
+      @media (max-width: 720px) {
+        #hello-input {
+          font-size: 2em;
+        }
+        
       }
       #hello-input:focus {
         outline: none;
@@ -158,7 +164,7 @@ const posts = (await getCollection("blog"))
         }
       </div>
 
-      <h3>About Me</h3>
+      <h3>About the Author</h3>
     </main>
     <Footer />
   </body><script>

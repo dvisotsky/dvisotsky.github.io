@@ -111,20 +111,36 @@ h6 {
 	line-height: 1.2;
 }
 h1 {
-	font-size: 3em;
-}
-h2 {
 	font-size: 2.5em;
 }
-h3 {
+h2 {
 	font-size: 2em;
 }
-h4 {
+h3 {
 	font-size: 1.5em;
 }
-h5 {
+h4 {
 	font-size: 1.25em;
 }
+h5 {
+	font-size: 1em;
+}
+
+@media (max-width: 720px) {
+	h1 {
+		font-size: 2em;
+	}
+	h2 {
+		font-size: 1.75em;
+	}
+	h3 {
+		font-size: 1.25em;
+	}
+	h4 {
+		font-size: 1.125em;
+	}
+}
+
 strong,
 b {
 	font-weight: 700;
@@ -188,6 +204,10 @@ blockquote {
 	color: var(--fg2);
 	font-style: italic;
 	text-decoration: none !important;
+}
+time {
+	font-style: italic;
+	font-size: 0.8em;
 }
 hr {
 	border: none;
