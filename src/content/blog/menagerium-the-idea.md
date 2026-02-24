@@ -1,5 +1,5 @@
 ---
-title: "Menagerium, the idea"
+title: "Menagerium, the Idea"
 description: "A personal project for D&D combat tracking"
 pubDate: "Oct 20 2025"
 tags: ["hobbies", "tech"]
@@ -14,3 +14,5 @@ Thus, my idea to build one myself popped into my head. I didn't bother looking i
 ## A new Quest
 
 The first hurdle would be to think through the basic database tables that a project like this would require. I chose a relational database over noSQL, thinking that I could re-use things like attack actions and spells. Later on this would come back to bite me, but we'll get to that later. My main desire for this project was to allow users to browse and search through D&D creatures, and use the pre-defined stats to help run combat encounters. So the first few tables stored creatures, various actions they could take, and spells that could be used. I chose to use GraphQL since the creatures had a lot of details and I wouldn't need everything at once. TypeORM also would be useful to keep the DB up to date, and I wired up the various resolvers and services with NestJS. This would be the foundation of the application, and after building out the basic CRUD functionality I tested everything in Postman to double check it worked as expected. Next up would be the UI. Vue seems like a good option, once the basics are set up I'll link a post here for a follow-up.
+
+[Update: The Prototype](/blog/menagerium-the-prototype)

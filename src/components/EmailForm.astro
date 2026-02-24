@@ -1,0 +1,119 @@
+---
+
+---
+
+<style>
+  /* Keep layout, but reuse global input/textarea defaults */
+  .email-form {
+    max-width: 700px;
+    margin-top: 1.25rem;
+  }
+  .email-form label {
+    display: block;
+    font-weight: 600;
+    margin-top: 0.75rem;
+    color: var(--fg);
+  }
+
+  /* Inputs and textareas inherit font-size and colors from global.css; add subtle border and radius */
+  .email-form input,
+  .email-form textarea {
+    padding: 0.5rem;
+    border: 1px solid var(--bg2);
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+
+  .email-form button {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: 6px;
+    border: 0;
+    background: var(--accent);
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .email-form button:hover {
+    background: var(--accent-dark);
+  }
+
+  .email-form .hp {
+    display: none;
+  }
+
+  .email-form .obf {
+    margin-top: 0.7rem;
+    font-size: 0.95rem;
+    color: var(--fg2);
+  }
+  #obf-email {
+    color: var(--blue);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+</style>
+
+<div class="email-form">
+  <form id="email-contact-form">
+    <label for="name">Name</label>
+    <input id="name" name="name" type="text" required />
+
+    <label for="reply">Your email</label>
+    <input id="reply" name="reply" type="email" required />
+
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="6" required></textarea>
+
+    <!-- Honeypot to reduce spam; do not remove -->
+    <label class="hp" for="website">Website</label>
+    <input class="hp" id="website" name="website" type="text" />
+
+    <button type="submit">Send via email client</button>
+  </form>
+
+  <p style="margin-top:.7rem; font-size:0.95rem" aria-hidden="true">
+    Or copy: <span id="obf-email">[loading address]</span>
+  </p>
+
+  <script type="module">
+    // Obfuscated address parts: replace these with your real address parts
+    const userPart = "david";
+    const domainPart = "example.com";
+
+    // Construct email only in JS so it's not present in raw HTML
+    const email = `${userPart}@${domainPart}`;
+
+    // Reveal a human-friendly obfuscated version and also make it copyable
+    const obf = document.getElementById("obf-email");
+    if (obf) {
+      obf.textContent = `${userPart} [at] ${domainPart}`;
+      obf.title = email;
+      obf.style.cursor = "pointer";
+      obf.addEventListener(
+        "click",
+        () => navigator.clipboard && navigator.clipboard.writeText(email),
+      );
+    }
+
+    const form = document.getElementById("email-contact-form");
+    if (!form) throw new Error("contact form missing");
+
+    form.addEventListener("submit", (ev) => {
+      ev.preventDefault();
+
+      // Honeypot check
+      const hp = document.getElementById("website");
+      if (hp && hp.value) return; // silently ignore probable bot submission
+
+      const name = document.getElementById("name").value.trim();
+      const reply = document.getElementById("reply").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      const subject = encodeURIComponent(`Website contact from ${name}`);
+      const body = encodeURIComponent(`From: ${name} <${reply}>\n\n${message}`);
+
+      // Open user's mail client with prefilled message (mailto uses client)
+      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    });
+  </script>
+</div>
