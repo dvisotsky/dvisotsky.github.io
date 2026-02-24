@@ -2,6 +2,7 @@
 title: "Menagerium, the Idea"
 description: "A personal project for D&D combat tracking"
 pubDate: "Oct 20 2025"
+heroImage: "/src/assets/iguana.jpg"
 tags: ["hobbies", "tech"]
 ---
 

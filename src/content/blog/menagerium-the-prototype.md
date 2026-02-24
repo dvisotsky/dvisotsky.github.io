@@ -3,6 +3,7 @@ title: "Menagerium, the Prototype"
 description: "Adding a UI, and planning a DB migration"
 pubDate: "Nov 09, 2025"
 tags: ["hobbies", "tech"]
+heroImage: "/src/assets/in-flight.jpg"
 ---
 
 ## Pushing buttons
