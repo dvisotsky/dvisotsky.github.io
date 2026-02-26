@@ -5,11 +5,10 @@
 */
 
 :root {
-	color-scheme: dark light;
+	color-scheme: dark;
 }
 
-:root,
-:root[data-theme='dark'] {
+:root {
 	/* Gruvbox Dark */
 	--bg:           #282828;
 	--bg-hard:      #1d2021;
@@ -42,38 +41,6 @@
 		0 2px 6px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.3), 0 16px 32px rgba(0,0,0,0.2);
 }
 
-:root[data-theme='light'] {
-	/* Gruvbox Light */
-	--bg:           #fbf1c7;
-	--bg-hard:      #f9f5d7;
-	--bg-soft:      #f2e5bc;
-	--bg1:          #ebdbb2;
-	--bg2:          #d5c4a1;
-	--bg3:          #bdae93;
-	--bg4:          #a89984;
-	--fg:           #3c3836;
-	--fg2:          #504945;
-	--fg3:          #665c54;
-	--fg4:          #7c6f64;
-	--yellow:       #b57614;
-	--yellow-dim:   #d79921;
-	--orange:       #af3a03;
-	--orange-dim:   #d65d0e;
-	--aqua:         #427b58;
-	--blue:         #076678;
-	--red:          #9d0006;
-	--purple:       #8f3f71;
-
-	/* Mapped for compatibility */
-	--accent:       #b57614;
-	--accent-dark:  #af3a03;
-	--black:        60, 56, 54;
-	--gray:         124, 111, 100;
-	--gray-light:   168, 153, 132;
-	--gray-dark:    80, 73, 69;
-	--box-shadow:
-		0 2px 6px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.08), 0 16px 32px rgba(0,0,0,0.06);
-}
 
 body {
 	font-family: 'Roboto', sans-serif;
@@ -107,7 +74,7 @@ h5,
 h6 {
 	font-family: 'Courier Prime', 'Courier New', Courier, monospace;
 	margin: 0 0 0.5rem 0;
-	color: var(--yellow);
+	color: var(--accent); /* use accent colour for headings */
 	line-height: 1.2;
 }
 h1 {

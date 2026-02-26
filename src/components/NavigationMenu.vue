@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
     </button>
 
     <div id="site-mobile-menu" class="internal-links" :class="{ open: isOpen }">
-      <a
+        <a
         v-for="link in links"
         :key="link.href"
         :href="link.href"
@@ -92,7 +92,7 @@ onBeforeUnmount(() => {
         {{ link.label }}
       </a>
     </div>
-  </div>
+</div>
 </template>
 
 <style scoped>
