@@ -22,7 +22,7 @@ While it displays the most relevant data about a creature, it also provides a br
 <div style="display: flex; justify-content:center;">
     <img 
         style="margin: auto;"
-        src="/src/assets/adult-dragon.png"
+        src="/public/assets/adult-dragon.png"
     >
 </div>
 
