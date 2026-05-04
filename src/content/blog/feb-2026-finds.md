@@ -6,6 +6,7 @@ tags:
   - hobbies
 heroImage: "/src/assets/feb-2026.png"
 ---
+
 ## Ground Control 40
 
 [Build Log](https://ncoughlin.com/posts/ground-control-40)
@@ -31,4 +32,4 @@ Music and art are some of the recent things that have fallen under the boots of 
 ## Other links
 
 - [WUVT](https://www.wuvt.vt.edu/) Virginia Tech's college radio (listen online for free)
-- [Yellow Cherry Jam](https://www.youtube.com/@yellowcherry_jam) lofi channel with human made music
+- [Yellow Cherry Jam](https://www.youtube.com/@yellowcherry_jam) (lofi channel with human made music)
