@@ -20,32 +20,13 @@ const posts = (await getCollection("blog")).sort(
       main {
         width: 960px;
       }
-      ul {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-      ul li {
-        width: calc(50% - 1rem);
-      }
-      ul li * {
-        text-decoration: none;
-        transition: 0.2s ease;
-      }
-      ul li img {
-        margin-bottom: 0.5rem;
-        border-radius: 4px;
-      }
-      ul li a {
-        display: block;
-      }
       .title {
         margin: 0;
         color: var(--text);
         line-height: 1;
+      }
+      li {
+        list-style: none;
       }
       ul li a:hover h4,
       ul li a:hover .date {
@@ -59,51 +40,29 @@ const posts = (await getCollection("blog")).sort(
         max-height: 280px;
         object-fit: cover;
       }
-      @media (max-width: 720px) {
-        .hero-image {
-          max-height: 120px;
-          object-fit: cover;
-        }
-        ul {
-          gap: 0.5em;
-        }
-        ul li {
-          width: 100%;
-          text-align: center;
-        }
-        ul li:first-child {
-          margin-bottom: 0;
-        }
-        ul li:first-child .title {
-          font-size: 1.563em;
-        }
-      }
     </style>
   </head>
   <body>
     <Header />
     <main>
       <section>
-        <ul>
+        <ul class="posts">
           {
             posts.map((post) => (
-              <li>
+              <li class="post">
                 <a href={`/blog/${post.id}/`}>
-                  {post.data.heroImage && (
-                    <Image
-                      width={720}
-                      height={360}
-                      src={post.data.heroImage}
-                      class="hero-image"
-                      alt=""
-                    />
-                  )}
                   <h4 class="title">{post.data.title}</h4>
-                  <p class="date">
-                    <FormattedDate date={post.data.pubDate} />
-                  </p>
                 </a>
+                  <div style="display: flex; align-items: center; gap: 1rem">
+                  <span class="date">
+                    <FormattedDate date={post.data.pubDate} />
+                  </span>
+                  <span class="tags">
+                    {post.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+                  </span>
+</div>
               </li>
+              <div class="post-dot" />
             ))
           }
         </ul>
